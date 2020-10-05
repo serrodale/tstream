@@ -16,12 +16,14 @@ const filterEvenNumbers = (x: number): Promise<boolean> => {
   });
 };
 
-const isGreaterThan = (x: number): (value: number) => Promise<boolean> => {
-  return (value: number) => new Promise(resolve => {
-    setTimeout(() => {
-      resolve(value > x);
-    }, 1000);
-  });
+const isGreaterThan = (x: number): ((value: number) => Promise<boolean>) => {
+  return (value: number) => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(value > x);
+      }, 1000);
+    });
+  };
 };
 
 const main = async () => {
