@@ -42,6 +42,13 @@ export class Stream<T> {
     });
   }
 
+  public populate(populator: (values: T[]) => AsyncValues<T>): Stream<T> {
+    return this.createStream({
+      type: StreamOperationType.POPULATE,
+      populator
+    });
+  }
+
   public peekOnce(peeker: (values: T[]) => void): Stream<T> {
     return this.createStream<T>({
       type: StreamOperationType.PEEK_ONCE,

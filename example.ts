@@ -31,6 +31,7 @@ const main = async () => {
     .of(getValuesFromDB())
     .map(x => x + 5)
     .peekOnce(console.log)
+    .populate(() => [1, 2, 4])
     .filter(filterEvenNumbers)
     .peekForEach(console.log)
     .unique()
