@@ -25,7 +25,14 @@ export class Stream<T> {
   public map<U>(mapper: (value: T) => U): Stream<U> {
     return this.createStream<U>({
       type: StreamOperationType.MAP,
-      mapper: mapper as any,
+      mapper,
+    });
+  }
+
+  public flatMap<U>(mapper: (value: T) => U[]): Stream<U> {
+    return this.createStream<U>({
+      type: StreamOperationType.FLAT_MAP,
+      mapper,
     });
   }
 

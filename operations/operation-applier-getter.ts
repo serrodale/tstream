@@ -5,6 +5,7 @@ import { StreamOperationApplier } from "./appliers/abstract.applier";
 import { StreamMapOperationApplier } from "./appliers/map.applier";
 import { StreamFilterOperationApplier } from "./appliers/filter.applier";
 import { StreamUniqueOperationApplier } from "./appliers/unique.applier";
+import { StreamFlatMapOperationApplier } from "./appliers/flat-map.applier";
 import { StreamPopulateOperationApplier } from "./appliers/populate.applier";
 import { StreamPeekOnceOperationApplier } from "./appliers/peek-once.applier";
 import { StreamPeekForEachOperationApplier } from "./appliers/peek-for-each.applier";
@@ -16,6 +17,7 @@ export abstract class StreamOperationApplierGetter {
       case StreamOperationType.MAP: return new StreamMapOperationApplier();
       case StreamOperationType.FILTER: return new StreamFilterOperationApplier();
       case StreamOperationType.UNIQUE: return new StreamUniqueOperationApplier();
+      case StreamOperationType.FLAT_MAP: return new StreamFlatMapOperationApplier();
       case StreamOperationType.POPULATE: return new StreamPopulateOperationApplier();
       case StreamOperationType.PEEK_ONCE: return new StreamPeekOnceOperationApplier();
       case StreamOperationType.PEEK_FOR_EACH: return new StreamPeekForEachOperationApplier();

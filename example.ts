@@ -33,6 +33,7 @@ const main = async () => {
     .peekOnce(console.log)
     .populate(() => [1, 2, 4])
     .filter(filterEvenNumbers)
+    .flatMap(x => [x + 1, x + 5, x + 9])
     .peekForEach(console.log)
     .unique()
     .firstMatch(isGreaterThan(5));
