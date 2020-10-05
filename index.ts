@@ -93,6 +93,19 @@ export class Stream<T> {
     return this.values;
   }
 
+  public async toObject<U>(
+    valueGenerator: (key: T) => AsyncValue<U>
+  ): Promise<Record<string | number | symbol, U>> {
+    await this.flush();
+    const result: Record<string | number | symbol, U> = {};
+
+    for (const value of await this.values) {
+      result[value as any] = await valueGenerator(value);
+    }
+
+    return result;
+  }
+
   private async flush(): Promise<any[]> {
     for (const operation of this.operations) {
       this.values = await this

@@ -22,7 +22,7 @@ const main = async () => {
     .map(x => x * 2)
     .filter(filterEvenNumbers)
     .unique()
-    .toList();
+    .toObject(x => x > 5);
 
   console.log(output);
 };
