@@ -1,3 +1,4 @@
+import { ObjectKey } from "./shared/object";
 import { AsyncValues, AsyncValue } from "./shared/async-value";
 
 import { StreamOperation } from "./operations/operation";
@@ -109,10 +110,19 @@ export class Stream<T> {
 
   public async toObject<U>(
     valueGenerator: (key: T) => AsyncValue<U>
-  ): Promise<Record<string | number | symbol, U>> {
+  ): Promise<Record<ObjectKey, U>> {
     return this.applyCollector({
       type: StreamCollectorType.OBJECT,
       valueGenerator
+    });
+  }
+
+  public async groupBy(
+    grouper: (value: T) => AsyncValue<ObjectKey>
+  ): Promise<Record<ObjectKey, T[]>> {
+    return this.applyCollector({
+      type: StreamCollectorType.GROUP_BY,
+      grouper
     });
   }
 

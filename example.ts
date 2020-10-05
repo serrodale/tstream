@@ -26,17 +26,24 @@ const isGreaterThan = (x: number): ((value: number) => Promise<boolean>) => {
   };
 };
 
+const isOdd = (x: number): Promise<'true' | 'false'> => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(x % 2 === 1 ? 'true' : 'false');
+    }, 1000);
+  });
+} 
+
 const main = async () => {
   const output = await Stream
     .of(getValuesFromDB())
     .map(x => x + 5)
     .peekOnce(console.log)
     .populate(() => [1, 2, 4])
-    .filter(isEven)
     .flatMap(x => [x + 1, x + 5, x + 9])
     .peekForEach(console.log)
     .unique()
-    .firstMatch(isGreaterThan(5));
+    .groupBy(isOdd);
 
   console.log(output);
 };

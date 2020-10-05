@@ -1,5 +1,6 @@
+import { Object } from "../../shared/object";
+import { StreamObjectCollector } from "../object.collector";
 import { StreamCollectorApplier } from "./abstract.applier";
-import { StreamObjectCollector, Object } from "../object.collector";
 
 export class StreamObjectCollectorApplier<T> extends StreamCollectorApplier<Object<T>> {
 
