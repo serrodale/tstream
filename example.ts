@@ -29,8 +29,10 @@ const isGreaterThan = (x: number): ((value: number) => Promise<boolean>) => {
 const main = async () => {
   const output = await Stream
     .of(getValuesFromDB())
-    .map(x => x * 2)
+    .map(x => x + 5)
+    .peekOnce(console.log)
     .filter(filterEvenNumbers)
+    .peekForEach(console.log)
     .unique()
     .firstMatch(isGreaterThan(5));
 

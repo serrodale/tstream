@@ -1,11 +1,15 @@
+import { AsyncValues, AsyncValue } from "./shared/async-value";
+
 import { StreamOperation } from "./operations/operation";
 import { StreamOperationType } from "./operations/operation-type";
-import { AsyncValues, AsyncValue } from "./shared/async-value";
+
 import { StreamOperationApplier } from "./appliers/applier";
 import { StreamMapOperationApplier } from "./appliers/map.applier";
 import { StreamSumOperationApplier } from "./appliers/sum.applier";
 import { StreamFilterOperationApplier } from "./appliers/filter.applier";
 import { StreamUniqueOperationApplier } from "./appliers/unique.applier";
+import { StreamPeekOnceOperationApplier } from "./appliers/peek-once.applier";
+import { StreamPeekForEachOperationApplier } from "./appliers/peek-for-each.applier";
 
 export class Stream<T> {
 
@@ -41,9 +45,17 @@ export class Stream<T> {
     });
   }
 
-  public peek(peeker: (value: T) => T): Stream<T> {
-    return this.createStream({
-      type: StreamOperationType.UNIQUE,
+  public peekOnce(peeker: (values: T[]) => void): Stream<T> {
+    return this.createStream<T>({
+      type: StreamOperationType.PEEK_ONCE,
+      peeker
+    });
+  }
+
+  public peekForEach(peeker: (value: T) => void): Stream<T> {
+    return this.createStream<T>({
+      type: StreamOperationType.PEEK_FOR_EACH,
+      peeker
     });
   }
 
@@ -71,7 +83,7 @@ export class Stream<T> {
   }
 
   public async sum(): Promise<number> {
-    const finalStream = this.createStream<number>({
+    const finalStream = this.createStream<T>({
       type: StreamOperationType.SUM,
     });
 
@@ -113,6 +125,8 @@ export class Stream<T> {
       case StreamOperationType.SUM: return new StreamSumOperationApplier();
       case StreamOperationType.FILTER: return new StreamFilterOperationApplier();
       case StreamOperationType.UNIQUE: return new StreamUniqueOperationApplier();
+      case StreamOperationType.PEEK_ONCE: return new StreamPeekOnceOperationApplier();
+      case StreamOperationType.PEEK_FOR_EACH: return new StreamPeekForEachOperationApplier();
     }
   }
 
