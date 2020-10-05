@@ -22,7 +22,7 @@ const main = async () => {
     .map(x => x * 2)
     .filter(filterEvenNumbers)
     .unique()
-    .sum();
+    .toList();
 
   console.log(output);
 };

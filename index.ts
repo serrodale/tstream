@@ -46,7 +46,7 @@ export class Stream<T> {
     this.operations = operations;
   }
 
-  public static of<T>(values: Promise<T[]>): Stream<T> {
+  public static of<T>(values: AsyncValues<T>): Stream<T> {
     return new Stream(values, []);
   }
 
@@ -70,7 +70,9 @@ export class Stream<T> {
     });
   }
 
-  public filter(filter: (value: AsyncValue<T>) => AsyncValue<boolean>): Stream<T> {
+  public filter(
+    filter: (value: AsyncValue<T>) => AsyncValue<boolean>
+  ): Stream<T> {
     return this.createStream({
       type: StreamOperationType.FILTER,
       filter
@@ -78,12 +80,17 @@ export class Stream<T> {
   }
 
   public async sum(): Promise<number> {
-    const finalStream = this.createStream({
+    const finalStream = this.createStream<number>({
       type: StreamOperationType.SUM,
     });
 
     await finalStream.flush();
     return finalStream.values as any;
+  }
+
+  public async toList(): Promise<T[]> {
+    await this.flush();
+    return this.values;
   }
 
   private async flush(): Promise<any[]> {
