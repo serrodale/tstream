@@ -8,7 +8,7 @@ const getValuesFromDB = (): Promise<number[]> => {
   });
 };
 
-const filterEvenNumbers = (x: number): Promise<boolean> => {
+const isEven = (x: number): Promise<boolean> => {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve(x % 2 === 0);
@@ -32,7 +32,7 @@ const main = async () => {
     .map(x => x + 5)
     .peekOnce(console.log)
     .populate(() => [1, 2, 4])
-    .filter(filterEvenNumbers)
+    .filter(isEven)
     .flatMap(x => [x + 1, x + 5, x + 9])
     .peekForEach(console.log)
     .unique()
