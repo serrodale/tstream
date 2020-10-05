@@ -3,6 +3,7 @@ enum StreamOperationType {
   SUM,
   FILTER,
   UNIQUE,
+  FIRST_MATCH,
 }
 
 type AsyncValue<T> = Promise<T> | T;
@@ -12,7 +13,8 @@ type StreamOperation =
   | StreamMapOperation
   | StreamSumOperation
   | StreamFilterOperation
-  | StreamUniqueOperation;
+  | StreamUniqueOperation
+  | StreamFirstMatchOperation;
 
 interface StreamMapOperation {
   type: StreamOperationType.MAP;
@@ -22,6 +24,11 @@ interface StreamMapOperation {
 interface StreamFilterOperation {
   type: StreamOperationType.FILTER;
   filter: (value: any) => AsyncValue<boolean>;
+}
+
+interface StreamFirstMatchOperation {
+  type: StreamOperationType.FIRST_MATCH;
+  matcher: (value: any) => AsyncValue<boolean>;
 }
 
 interface StreamSumOperation {
@@ -68,6 +75,20 @@ export class Stream<T> {
     return this.createStream({
       type: StreamOperationType.UNIQUE,
     });
+  }
+
+  public async firstMatch(
+    matcher: (value: T) => AsyncValue<boolean>
+  ): Promise<T> | null {
+    await this.flush();
+
+    for (const value of await this.values) {
+      if (await matcher(value)) {
+        return value;
+      }
+    }
+
+    return null;
   }
 
   public filter(
