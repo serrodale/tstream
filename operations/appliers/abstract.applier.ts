@@ -1,4 +1,4 @@
-import { StreamOperation } from "operations/operation";
+import { StreamOperation } from "../operation";
 
 export abstract class StreamOperationApplier {
 

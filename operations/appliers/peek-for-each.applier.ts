@@ -1,5 +1,5 @@
-import { StreamOperationApplier } from "./applier";
-import { StreamPeekForEachOperation } from "operations/peek-for-each.operation";
+import { StreamOperationApplier } from "./abstract.applier";
+import { StreamPeekForEachOperation } from "../peek-for-each.operation";
 
 export class StreamPeekForEachOperationApplier extends StreamOperationApplier {
 

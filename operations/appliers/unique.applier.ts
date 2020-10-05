@@ -1,5 +1,5 @@
-import { StreamUniqueOperation } from "operations/unique.operation";
-import { StreamOperationApplier } from "./applier";
+import { StreamUniqueOperation } from "../unique.operation";
+import { StreamOperationApplier } from "./abstract.applier";
 
 export class StreamUniqueOperationApplier extends StreamOperationApplier {
 

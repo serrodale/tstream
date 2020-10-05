@@ -2,14 +2,11 @@ import { AsyncValues, AsyncValue } from "./shared/async-value";
 
 import { StreamOperation } from "./operations/operation";
 import { StreamOperationType } from "./operations/operation-type";
+import { StreamOperationApplierGetter } from "./operations/operation-applier-getter";
 
-import { StreamOperationApplier } from "./appliers/applier";
-import { StreamMapOperationApplier } from "./appliers/map.applier";
-import { StreamSumOperationApplier } from "./appliers/sum.applier";
-import { StreamFilterOperationApplier } from "./appliers/filter.applier";
-import { StreamUniqueOperationApplier } from "./appliers/unique.applier";
-import { StreamPeekOnceOperationApplier } from "./appliers/peek-once.applier";
-import { StreamPeekForEachOperationApplier } from "./appliers/peek-for-each.applier";
+import { StreamCollector } from "./collectors/collector";
+import { StreamCollectorType } from "./collectors/collector-type";
+import { StreamCollectorApplierGetter } from "./collectors/collector-applier-getter";
 
 export class Stream<T> {
 
@@ -59,20 +56,6 @@ export class Stream<T> {
     });
   }
 
-  public async firstMatch(
-    matcher: (value: T) => AsyncValue<boolean>
-  ): Promise<T> | null {
-    await this.flush();
-
-    for (const value of await this.values) {
-      if (await matcher(value)) {
-        return value;
-      }
-    }
-
-    return null;
-  }
-
   public filter(
     filter: (value: AsyncValue<T>) => AsyncValue<boolean>
   ): Stream<T> {
@@ -82,52 +65,51 @@ export class Stream<T> {
     });
   }
 
-  public async sum(): Promise<number> {
-    const finalStream = this.createStream<T>({
-      type: StreamOperationType.SUM,
+  public async firstMatch(
+    matcher: (value: T) => AsyncValue<boolean>
+  ): Promise<T> | null {
+    return this.applyCollector({
+      type: StreamCollectorType.FIRST_MATCH,
+      matcher
     });
+  }
 
-    await finalStream.flush();
-    return finalStream.values as any;
+  public async sum(): Promise<number> {
+    return this.applyCollector({
+      type: StreamCollectorType.SUM
+    });
+  }
+
+  private async applyCollector(collector: StreamCollector): Promise<any> {
+    await this.applyOperations();
+
+    return StreamCollectorApplierGetter
+      .get(collector.type)
+      .collect(collector, this.values);
   }
 
   public async toList(): Promise<T[]> {
-    await this.flush();
+    await this.applyOperations();
     return this.values;
   }
 
   public async toObject<U>(
     valueGenerator: (key: T) => AsyncValue<U>
   ): Promise<Record<string | number | symbol, U>> {
-    await this.flush();
-    const result: Record<string | number | symbol, U> = {};
-
-    for (const value of await this.values) {
-      result[value as any] = await valueGenerator(value);
-    }
-
-    return result;
+    return this.applyCollector({
+      type: StreamCollectorType.OBJECT,
+      valueGenerator
+    });
   }
 
-  private async flush(): Promise<any[]> {
+  private async applyOperations(): Promise<any[]> {
     for (const operation of this.operations) {
-      this.values = await this
-        .getApplier(operation)
+      this.values = await StreamOperationApplierGetter
+        .get(operation)
         .apply(operation, this.values);
     }
 
     return this.values;
-  }
-
-  private getApplier(operation: StreamOperation): StreamOperationApplier {
-    switch (operation.type) {
-      case StreamOperationType.MAP: return new StreamMapOperationApplier();
-      case StreamOperationType.SUM: return new StreamSumOperationApplier();
-      case StreamOperationType.FILTER: return new StreamFilterOperationApplier();
-      case StreamOperationType.UNIQUE: return new StreamUniqueOperationApplier();
-      case StreamOperationType.PEEK_ONCE: return new StreamPeekOnceOperationApplier();
-      case StreamOperationType.PEEK_FOR_EACH: return new StreamPeekForEachOperationApplier();
-    }
   }
 
 }

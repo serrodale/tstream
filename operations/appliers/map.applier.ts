@@ -1,5 +1,5 @@
-import { StreamMapOperation } from "operations/map.operation";
-import { StreamOperationApplier } from "./applier";
+import { StreamMapOperation } from "../map.operation";
+import { StreamOperationApplier } from "./abstract.applier";
 
 export class StreamMapOperationApplier extends StreamOperationApplier {
 

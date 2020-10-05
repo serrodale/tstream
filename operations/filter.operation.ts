@@ -1,4 +1,4 @@
-import { AsyncValue } from "shared/async-value";
+import { AsyncValue } from "../shared/async-value";
 import { StreamOperationType } from "./operation-type";
 
 export interface StreamFilterOperation {
