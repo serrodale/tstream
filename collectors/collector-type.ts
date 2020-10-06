@@ -1,7 +1,7 @@
 export enum StreamCollectorType {
   SUM,
   TO_SET,
-  OBJECT,
+  TO_OBJECT,
   GROUP_BY,
   FIRST_MATCH,
   PARTITION_BY,

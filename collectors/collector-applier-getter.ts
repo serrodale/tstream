@@ -3,8 +3,8 @@ import { StreamCollectorType } from "./collector-type";
 import { StreamCollectorApplier } from "./appliers/abstract.applier";
 import { StreamSumCollectorApplier } from "./appliers/sum.applier";
 import { StreamToSetCollectorApplier } from "./appliers/to-set.applier";
-import { StreamObjectCollectorApplier } from "./appliers/object.applier";
 import { StreamGroupByCollectorApplier } from "./appliers/group-by.applier";
+import { StreamToObjectCollectorApplier } from "./appliers/to-object.applier";
 import { StreamFirstMatchCollectorApplier } from "./appliers/first-match.applier";
 import { StreamPartitionByCollectorApplier } from "./appliers/partition-by.applier";
 
@@ -14,8 +14,8 @@ export abstract class StreamCollectorApplierGetter {
     switch (type) {
       case StreamCollectorType.SUM: return new StreamSumCollectorApplier();
       case StreamCollectorType.TO_SET: return new StreamToSetCollectorApplier();
-      case StreamCollectorType.OBJECT: return new StreamObjectCollectorApplier();
       case StreamCollectorType.GROUP_BY: return new StreamGroupByCollectorApplier();
+      case StreamCollectorType.TO_OBJECT: return new StreamToObjectCollectorApplier();
       case StreamCollectorType.FIRST_MATCH: return new StreamFirstMatchCollectorApplier();
       case StreamCollectorType.PARTITION_BY: return new StreamPartitionByCollectorApplier();
     }

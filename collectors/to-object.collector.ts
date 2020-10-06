@@ -1,6 +1,6 @@
 import { StreamCollectorType } from "./collector-type";
 
-export interface StreamObjectCollector {
-  type: StreamCollectorType.OBJECT;
+export interface StreamToObjectCollector {
+  type: StreamCollectorType.TO_OBJECT;
   valueGenerator: (key: any) => any;
 }

@@ -1,10 +1,10 @@
 import { Object } from "../../shared/object";
-import { StreamObjectCollector } from "../object.collector";
 import { StreamCollectorApplier } from "./abstract.applier";
+import { StreamToObjectCollector } from "../to-object.collector";
 
-export class StreamObjectCollectorApplier<T> extends StreamCollectorApplier<Object<T>> {
+export class StreamToObjectCollectorApplier<T> extends StreamCollectorApplier<Object<T>> {
 
-  public async collect(collector: StreamObjectCollector, values: any): Promise<Object<T>> {
+  public async collect(collector: StreamToObjectCollector, values: any): Promise<Object<T>> {
     const result: Object<T> = {};
 
     for (const value of values) {

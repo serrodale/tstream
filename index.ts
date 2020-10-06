@@ -112,7 +112,7 @@ export class Stream<T> {
     valueGenerator: (key: T) => AsyncValue<U>
   ): Promise<Record<ObjectKey, U>> {
     return this.applyCollector({
-      type: StreamCollectorType.OBJECT,
+      type: StreamCollectorType.TO_OBJECT,
       valueGenerator
     });
   }
