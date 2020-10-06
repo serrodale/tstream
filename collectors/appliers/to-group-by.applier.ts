@@ -1,10 +1,10 @@
 import { Object, ObjectKey } from "../../shared/object";
 import { StreamCollectorApplier } from "./abstract.applier";
-import { StreamGroupByCollector } from "collectors/group-by.collector";
+import { StreamToGroupByCollector } from "collectors/to-group-by.collector";
 
-export class StreamGroupByCollectorApplier<T> extends StreamCollectorApplier<Object<T[]>> {
+export class StreamToGroupByCollectorApplier<T> extends StreamCollectorApplier<Object<T[]>> {
 
-  public async collect(collector: StreamGroupByCollector, values: any): Promise<Object<T[]>> {
+  public async collect(collector: StreamToGroupByCollector, values: any): Promise<Object<T[]>> {
     const result: Object<T[]> = {};
 
     for (const value of values) {

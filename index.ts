@@ -80,18 +80,18 @@ export class Stream<T> {
     });
   }
 
-  public async firstMatch(
+  public async toFirstMatch(
     matcher: (value: T) => AsyncValue<boolean>
   ): Promise<T> | null {
     return this.applyCollector({
-      type: StreamCollectorType.FIRST_MATCH,
+      type: StreamCollectorType.TO_FIRST_MATCH,
       matcher
     });
   }
 
-  public async sum(): Promise<number> {
+  public async toSum(): Promise<number> {
     return this.applyCollector({
-      type: StreamCollectorType.SUM
+      type: StreamCollectorType.TO_SUM
     });
   }
 
@@ -123,20 +123,20 @@ export class Stream<T> {
     });
   }
 
-  public async groupBy(
+  public async toGroupBy(
     grouper: (value: T) => AsyncValue<ObjectKey>
   ): Promise<Record<ObjectKey, T[]>> {
     return this.applyCollector({
-      type: StreamCollectorType.GROUP_BY,
+      type: StreamCollectorType.TO_GROUP_BY,
       grouper
     });
   }
 
-  public async partitionBy(
+  public async toPartitionBy(
     partitioner: (value: T) => AsyncValue<boolean>
   ): Promise<Record<ObjectKey, T[]>> {
     return this.applyCollector({
-      type: StreamCollectorType.PARTITION_BY,
+      type: StreamCollectorType.TO_PARTITION_BY,
       partitioner
     });
   }
