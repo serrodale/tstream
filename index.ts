@@ -117,6 +117,12 @@ export class Stream<T> {
     });
   }
 
+  public async toSet(): Promise<Set<T>> {
+    return this.applyCollector({
+      type: StreamCollectorType.TO_SET,
+    });
+  }
+
   public async groupBy(
     grouper: (value: T) => AsyncValue<ObjectKey>
   ): Promise<Record<ObjectKey, T[]>> {

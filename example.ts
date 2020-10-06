@@ -44,7 +44,7 @@ const main = async () => {
     .populate(() => [1, 2, 4])
     .flatMap(x => [x + 1, x + 5, x + 9])
     .unique()
-    .partitionBy(isEven);
+    .toSet();
 
   console.log(output);
 };
