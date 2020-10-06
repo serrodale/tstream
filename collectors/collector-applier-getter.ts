@@ -5,6 +5,7 @@ import { StreamSumCollectorApplier } from "./appliers/sum.applier";
 import { StreamObjectCollectorApplier } from "./appliers/object.applier";
 import { StreamGroupByCollectorApplier } from "./appliers/group-by.applier";
 import { StreamFirstMatchCollectorApplier } from "./appliers/first-match.applier";
+import { StreamPartitionByCollectorApplier } from "./appliers/partition-by.applier";
 
 export abstract class StreamCollectorApplierGetter {
 
@@ -14,6 +15,7 @@ export abstract class StreamCollectorApplierGetter {
       case StreamCollectorType.OBJECT: return new StreamObjectCollectorApplier();
       case StreamCollectorType.GROUP_BY: return new StreamGroupByCollectorApplier();
       case StreamCollectorType.FIRST_MATCH: return new StreamFirstMatchCollectorApplier();
+      case StreamCollectorType.PARTITION_BY: return new StreamPartitionByCollectorApplier();
     }
   }
 

@@ -38,12 +38,13 @@ const main = async () => {
   const output = await Stream
     .of(getValuesFromDB())
     .map(x => x + 5)
-    .peekOnce(console.log)
+    .peekOnce(() => console.log('before'))
+    .peekForEach(console.log)
+    .peekOnce(() => console.log('after'))
     .populate(() => [1, 2, 4])
     .flatMap(x => [x + 1, x + 5, x + 9])
-    .peekForEach(console.log)
     .unique()
-    .groupBy(isOdd);
+    .partitionBy(isEven);
 
   console.log(output);
 };

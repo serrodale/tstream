@@ -3,4 +3,5 @@ export enum StreamCollectorType {
   OBJECT,
   GROUP_BY,
   FIRST_MATCH,
+  PARTITION_BY,
 };

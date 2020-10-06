@@ -126,6 +126,15 @@ export class Stream<T> {
     });
   }
 
+  public async partitionBy(
+    partitioner: (value: T) => AsyncValue<boolean>
+  ): Promise<Record<ObjectKey, T[]>> {
+    return this.applyCollector({
+      type: StreamCollectorType.PARTITION_BY,
+      partitioner
+    });
+  }
+
   private async applyOperations(): Promise<any[]> {
     for (const operation of this.operations) {
       this.values = await StreamOperationApplierGetter
