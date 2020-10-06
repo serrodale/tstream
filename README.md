@@ -7,7 +7,7 @@ $ npm example
 ```
 
 ```ts
-import { Stream } from '.';
+import { Stream } from ".";
 
 const getValuesFromDB = (): Promise<number[]> => {
   return new Promise(resolve => {
